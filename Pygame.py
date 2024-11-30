@@ -16,6 +16,9 @@ bandera_ganador = False
 lista_caramelos_uno = []
 lista_caramelos_dos = []
 lista_caramelos_tres = []
+lista_posicion_caramelos_uno = []
+lista_posicion_caramelos_dos = []
+lista_posicion_caramelos_tres = []
 
 pantalla = pygame.display.set_mode((ANCHO_VENTANA, ALTO_VENTANA))   # Creo la pantalla
 pygame.display.set_caption("Candy Dulce Crush")     # Pongo un titulo en la ventana
@@ -62,14 +65,17 @@ while flag_correr:
             if numero_en_posicion(tablero, i, clave, j) == 1:
                 pantalla.blit(imagen_caramelo_uno,posicion_caramelo)
                 lista_caramelos_uno.append(posicion_caramelo)
+                lista_posicion_caramelos_uno.append([i , j])
 
             elif numero_en_posicion(tablero, i, clave, j) == 2: 
                 pantalla.blit(imagen_caramelo_dos,(posicion_caramelo))
                 lista_caramelos_dos.append(posicion_caramelo)
+                lista_posicion_caramelos_dos.append([i , j])
                 
             else:
                 pantalla.blit(imagen_caramelo_tres,(posicion_caramelo))
                 lista_caramelos_tres.append(posicion_caramelo)
+                lista_posicion_caramelos_tres.append([i , j])
    
     for i in range(len(lista_caramelos_uno)):
         posicion_caramelo_uno = pygame.Rect(lista_caramelos_uno[i][0],lista_caramelos_uno[i][1], 10, 10)
@@ -77,8 +83,12 @@ while flag_correr:
         rect_caramelo_uno.x = lista_caramelos_uno[i][0] 
         rect_caramelo_uno.y = lista_caramelos_uno[i][1] 
         if posicion_mouse.colliderect(rect_caramelo_uno):
-            posicion_circulo = [1100, 200]
-            pygame.draw.circle(pantalla, GREEN2, posicion_circulo,80)
+            numero = 1
+            fila = lista_posicion_caramelos_uno[i][0]
+            columna = lista_posicion_caramelos_uno[i][1]
+            if revisar_filas(tablero, fila, clave, columna, numero):
+                posicion_circulo = [1100, 200]
+                pygame.draw.circle(pantalla, GREEN2, posicion_circulo,80)
 
     for i in range(len(lista_caramelos_dos)):
         posicion_caramelo_dos = pygame.Rect(lista_caramelos_dos[i][0],lista_caramelos_dos[i][1], 10, 10)
@@ -86,8 +96,12 @@ while flag_correr:
         rect_caramelo_dos.x = lista_caramelos_dos[i][0] 
         rect_caramelo_dos.y = lista_caramelos_dos[i][1] 
         if posicion_mouse.colliderect(rect_caramelo_dos):
-            posicion_circulo = [1100, 400]
-            pygame.draw.circle(pantalla, RED1 ,posicion_circulo,80)
+            numero = 2
+            fila = lista_posicion_caramelos_dos[i][0]
+            columna = lista_posicion_caramelos_dos[i][1]
+            if revisar_filas(tablero, fila, clave, columna, numero):
+                posicion_circulo = [1100, 400]
+                pygame.draw.circle(pantalla, RED1 ,posicion_circulo,80)
     
     for i in range(len(lista_caramelos_tres)):
         posicion_caramelo_tres = pygame.Rect(lista_caramelos_tres[i][0],lista_caramelos_tres[i][1], 10, 10)
@@ -95,8 +109,21 @@ while flag_correr:
         rect_caramelo_tres.x = lista_caramelos_tres[i][0] 
         rect_caramelo_tres.y = lista_caramelos_tres[i][1] 
         if posicion_mouse.colliderect(rect_caramelo_tres):
-            posicion_circulo = [1100, 600]
-            pygame.draw.circle(pantalla, COLOR_AMARILLO,posicion_circulo,80)
+            numero  = 3
+            fila = lista_posicion_caramelos_tres[i][0]
+            columna = lista_posicion_caramelos_tres[i][1]
+            if revisar_filas(tablero, fila, clave, columna, numero):
+                posicion_circulo = [1100, 600]
+                pygame.draw.circle(pantalla, BLUE, posicion_circulo,80)
+    
+
+    '''
+    if evento.type == pygame.MOUSEBUTTONDOWN:
+        #ganador(revisar_filas(tablero, fila, clave, columna, numero))
+        if revisar_filas(tablero, fila, clave, columna, numero):
+            pygame.draw.rect(pantalla, COLOR_BLANCO,(500,500,600,1000))
+            pygame.display.flip()'''
+
 
 
     pygame.display.flip()         # Muestro los cambios en la pantalla

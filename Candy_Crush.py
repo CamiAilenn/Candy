@@ -75,16 +75,61 @@ def revisar_fila_anterior (tablero, fila, clave, columna, numero)->bool:
     """Ingresa el tablero, la posicion (fila y columna)
     y el numero con el que compara
     Devuelve True si lo encuentra en la misma columna pero la fila anterior"""
-    if tablero[fila + 1][clave][columna] == numero:
+    if tablero[fila - 1][clave][columna] == numero:
         return True
     
 def revisar_fila_siguiente (tablero, fila, clave, columna, numero)->bool:
     """Ingresa el tablero, la posicion (fila y columna)
     y el numero con el que compara
     Devuelve True si lo encuentra en la misma columna pero la fila siguiente"""
-    if tablero[fila - 1][clave][columna] == numero:
+    if tablero[fila + 1][clave][columna] == numero:
         return True
     
+def revisar_filas(tablero, fila, clave, columna, numero)->bool:
+    """ Ingresa por parametro el tablero, la fila por la cual ingresar, 
+    la clave del diccionario, la columna elegida, y el numero a comprar.
+    Retorna True si acerto el juego"""
+
+    bandera_ganador = False
+    if fila == 0:
+        if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+            fila += 1  #Para usar la funcion y que revise la fila siguiente de la siguiente
+            if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+
+    elif fila == 1: 
+        if revisar_fila_anterior(tablero, fila, clave, columna, numero):
+            if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+        elif revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+            fila += 1  #Para usar la funcion y que revise la fila siguiente de la siguiente
+            if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+    elif fila == 2:
+        if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
+            if revisar_fila_anterior(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+        elif revisar_fila_anterior(tablero, fila, clave, columna, numero):
+            fila -=1
+            if revisar_fila_anterior(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+    else:
+        if revisar_fila_anterior(tablero, fila, clave, columna, numero):
+            fila -= 1   #Para usar la funcion y que revise la fila ANTERIOR de la anterior
+            if revisar_fila_anterior(tablero, fila, clave, columna, numero):
+                bandera_ganador = True
+    
+    return bandera_ganador
+
+def ganador(bandera_ganador:bool):
+    if bandera_ganador:
+        print("HA GANADO 10 PUNTOS")
+    else:
+        print("SEGUI PARTICIPANDO")
+
+
+
+
 filas = 4
 columnas = 7
 clave = "Piezas"
@@ -104,36 +149,6 @@ print(f"La columna elegida es {columna}")   #Chequeo
 print(numero)                               #Chequeo
 
 #------------------------------------------------------------
-if fila == 0:
-    if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-        fila += 1  #Para usar la funcion y que revise la fila siguiente de la siguiente
-        if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
-            
-elif fila == 1: 
-    if revisar_fila_anterior(tablero, fila, clave, columna, numero):
-        if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
-    elif revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-        fila += 1  #Para usar la funcion y que revise la fila siguiente de la siguiente
-        if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
-elif fila == 2:
-    if revisar_fila_siguiente(tablero, fila, clave, columna, numero):
-        if revisar_fila_anterior(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
-    elif revisar_fila_anterior(tablero, fila, clave, columna, numero):
-        fila -=1
-        if revisar_fila_anterior(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
-else:
-    if revisar_fila_anterior(tablero, fila, clave, columna, numero):
-        fila -= 1   #Para usar la funcion y que revise la fila ANTERIOR de la anterior
-        if revisar_fila_anterior(tablero, fila, clave, columna, numero):
-            bandera_ganador = True
 
+'''
 
-if bandera_ganador:
-    print("HA GANADO 10 PUNTOS")
-else:
-    print("SEGUI PARTICIPANDO")'''
