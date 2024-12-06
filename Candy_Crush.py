@@ -25,6 +25,7 @@
 # Utilizar funciones, validar el ingreso de datos
 
 from random import *
+import csv
 
 def generar_tablero(filas, columnas, clave, inicio_random:int, fin_random:int)->list:
     
@@ -121,11 +122,22 @@ def revisar_filas(tablero, fila, clave, columna, numero)->bool:
     
     return bandera_ganador
 
-def ganador(bandera_ganador:bool):
+def puntos_ganador(bandera_ganador:bool)->int:
     if bandera_ganador:
         print("HA GANADO 10 PUNTOS")
+        puntos = 10
     else:
         print("SEGUI PARTICIPANDO")
+        puntos = 0
+    return puntos
+
+def generar_csv(nombre_archivo:str, nombre_jugador, puntos):
+    """Ingresa por parametro el nombre del archivo CSV
+    el nombre de un jugador y sus puntos
+    los agrega al final del archivo CSV"""
+    archivo = open(nombre_archivo, "a")
+    archivo.write(f"{nombre_jugador} tiene {puntos} puntos\n")
+    archivo.close()
 
 
 
@@ -136,9 +148,9 @@ clave = "Piezas"
 inicio_piezas = 1
 fin_piezas = 3
 bandera_ganador = False
+nombre_archivo = "Jugadores_Candy.csv"
 
-'''
-tablero = generar_tablero(filas, columnas, clave, inicio_piezas, fin_piezas)
+'''tablero = generar_tablero(filas, columnas, clave, inicio_piezas, fin_piezas)
 mostrar_lista(tablero)
 print("Usted ingresara una posicion")
 fila = ingresar_validar_fila(0,3)
@@ -147,8 +159,38 @@ numero =  numero_en_posicion(tablero, fila, clave, columna)  #Guarda el numero e
 print(f"La fila elegida es {fila}")         #Chequeo
 print(f"La columna elegida es {columna}")   #Chequeo
 print(numero)                               #Chequeo
+puntos = puntos_ganador(revisar_filas(tablero, fila, clave, columna, numero))
 
-#------------------------------------------------------------
 
-'''
+nombre = input("Ingrese su nombre: ")
+generar_csv("Jugadores_Candy.csv", nombre, puntos)'''
 
+
+
+def armar_lista_caramelos(lista_caramelos, numero, posicion_caramelo, i, j):
+    posicion_tablero = [i, j]
+    lista_caramelos[0]["Numero"].append(numero)
+    lista_caramelos[1]["Posicion rect"].append(posicion_caramelo)
+    lista_caramelos[2]["Posicion tablero"].append(posicion_tablero)
+
+def iniciar_lista_caramelos():
+    lista_caramelos = [{"Numero": []},
+                        {"Posicion rect": []},
+                   {"Posicion tablero": []}]
+    return lista_caramelos
+
+
+def preparar_armado_lista(tablero, i, clave, j,imagen_caramelo_uno,posicion_caramelo,lista_caramelos):
+    numero = numero_en_posicion(tablero, i, clave, j)
+    if numero == 1:
+        pantalla.blit(imagen_caramelo_uno,posicion_caramelo)
+        if len(lista_caramelos[0]["Numero"])<=filas*columnas:
+            armar_lista_caramelos(lista_caramelos, numero, posicion_caramelo, i, j)
+    elif numero == 2: 
+        pantalla.blit(imagen_caramelo_dos,(posicion_caramelo))
+        if len(lista_caramelos[0]["Numero"])<= filas*columnas:
+            armar_lista_caramelos(lista_caramelos, numero, posicion_caramelo, i, j)
+    else:
+        pantalla.blit(imagen_caramelo_tres,(posicion_caramelo))
+        if len(lista_caramelos[0]["Numero"])<=filas*columnas:
+            armar_lista_caramelos(lista_caramelos, numero, posicion_caramelo, i, j)

@@ -15,7 +15,7 @@ clave = "Piezas"
 inicio_piezas = 1
 fin_piezas = 3
 bandera_ganador = False
-
+contador_ganador = 0
 contador_perdedor = 0
 
 
@@ -73,7 +73,7 @@ fuente_timer = pygame.font.SysFont("Comic Sans", 80)      # Defino texto que ing
 
 font_input = pygame.font.SysFont("Arial", 50)       #Ingreso de texto del usuario
 ingreso = ""
-ingreso_rect = pygame.Rect(100,200,400,75)
+ingreso_rect = pygame.Rect(100,200,500,100)
 
 #TEXTOS
 fuente_texto = pygame.font.SysFont("Comic Sans", 30)           #el texto va a ser una superficie
@@ -164,6 +164,8 @@ while flag_correr:
                     fila = lista_caramelos[2]["Posicion tablero"][i][0] 
                     columna = lista_caramelos[2]["Posicion tablero"][i][1] 
                     if revisar_filas(tablero, fila, clave, columna, numero):
+                        posicion_circulo = [1100, 200]
+                        pygame.draw.circle(pantalla, GREEN2, posicion_circulo,80)
                         contador_ganador += 1
                         flag_juego = False
                     else: 
@@ -174,6 +176,7 @@ while flag_correr:
                                 fin_tiempo = True
                                 flag_pantalla_juego = False
                                 flag_pantalla_final = True
+                        contador_perdedor += 1
                         flag_juego = False
 
             pygame.display.flip()    
@@ -217,8 +220,8 @@ while flag_correr:
         
         pantalla.blit(imagen_jugar_de_nuevo, posicion_jugar_de_nuevo)
 
-        pygame.draw.rect(pantalla, ORANGE2, ingreso_rect , 2)             #MUESTRO LA CAJA DE TEXTO PARA QUE INGRESE UN TEXTO
-        font_input_surface = font_input.render(ingreso, True, RED3) 
+        pygame.draw.rect(pantalla, GREEN, ingreso_rect , 2)             #MUESTRO LA CAJA DE TEXTO PARA QUE INGRESE UN TEXTO
+        font_input_surface = font_input.render(ingreso, True, RED2) 
         pantalla.blit(font_input_surface,( ingreso_rect.x + 5 , ingreso_rect.y + 5 ))
 
         texto = fuente_texto.render(mensaje , True, GREEN1)    #transforma el texto en una imagen
@@ -232,7 +235,7 @@ while flag_correr:
 pygame.quit()       # Termina el programa
 
 print(contador_ganador)
-
+print(contador_perdedor)
 mostrar_lista(tablero)
 for i in range(3):
     print(lista_caramelos[i])
